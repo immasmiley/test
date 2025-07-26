@@ -1,0 +1,67 @@
+MANUAL FACTORY RESET INSTRUCTIONS FOR SAMSUNG GALAXY J3
+=======================================================
+
+The Settings app should now be open on your phone. Follow these steps:
+
+STEP 1: NAVIGATE TO RESET OPTIONS
+1. In the Settings app, scroll down and look for:
+   - "General Management" or "System" or "Backup & Reset"
+   - Tap on it
+
+STEP 2: FIND FACTORY RESET
+1. Look for one of these options:
+   - "Reset" or "Reset Options"
+   - "Factory data reset"
+   - "Erase all data"
+   - Tap on it
+
+STEP 3: CONFIRM FACTORY RESET
+1. You may see a warning about data loss
+2. Look for:
+   - "Reset device" or "Erase all data"
+   - "Factory data reset"
+   - Tap on it
+
+STEP 4: ENTER SECURITY CREDENTIALS
+1. If prompted, enter:
+   - Your PIN, password, or pattern
+   - Or tap "Skip" if available
+
+STEP 5: FINAL CONFIRMATION
+1. You'll see a final warning
+2. Tap "Delete all" or "Reset device"
+3. The phone will begin the factory reset process
+
+STEP 6: WAIT FOR COMPLETION
+1. The phone will reboot and show a progress bar
+2. This may take 5-10 minutes
+3. Do not disconnect the USB cable during this process
+
+STEP 7: COMPLETE SETUP
+1. Phone will boot to fresh Android setup
+2. Complete basic setup (language, WiFi, etc.)
+3. Skip Google account setup if possible
+4. Complete the setup
+
+STEP 8: ENABLE DEVELOPER OPTIONS
+1. Go to Settings > About Phone
+2. Tap "Build Number" 7 times
+3. You'll see "Developer options enabled"
+
+STEP 9: ENABLE USB DEBUGGING
+1. Go to Settings > Developer Options
+2. Enable "USB Debugging"
+3. Connect USB cable if not already connected
+4. Allow USB Debugging when prompted
+
+STEP 10: READY FOR U3CP INSTALLATION
+1. Phone is now wiped and ready
+2. Run the U3CP installation script
+3. The system will be installed automatically
+
+TROUBLESHOOTING:
+- If you can't find reset options, try searching in Settings
+- If factory reset fails, try recovery mode method
+- If phone won't boot after reset, it may need firmware reflash
+
+CONTACT: Once factory reset is complete, let me know and I'll proceed with U3CP installation. 

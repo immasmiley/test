@@ -1,0 +1,34 @@
+
+# F-Droid Installation Guide for Samsung Galaxy J3
+
+## Step 1: Install F-Droid
+1. Open your device's browser
+2. Go to: https://f-droid.org/
+3. Download the F-Droid APK
+4. Install the APK (allow unknown sources if needed)
+
+## Step 2: Install Python Apps
+Once F-Droid is installed, search for and install:
+- **Pydroid 3** (Python IDE with packages)
+- **QPython 3** (Python interpreter)
+- **Termux** (Linux terminal)
+
+## Step 3: Install Python Packages
+In Pydroid 3 or Termux, install:
+```
+pip install flask
+pip install requests
+pip install psutil
+pip install pillow
+```
+
+## Step 4: Run U3CP System
+After Python is installed, you can run:
+```
+python /sdcard/real_system_dashboard.py
+```
+
+## Alternative: Manual APK Installation
+If F-Droid doesn't work, download these APKs directly:
+- Pydroid 3: https://play.google.com/store/apps/details?id=org.pydroid3
+- Termux: https://f-droid.org/packages/com.termux/

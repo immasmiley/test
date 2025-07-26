@@ -1,0 +1,61 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      with:
+        api-level: 34
+        build-tools: 34.0.0
+        
+    - name: Make build script executable
+      run: chmod +x build_enhanced_wsl.sh
+      
+    - name: Install additional dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget unzip curl build-essential
+        
+    - name: Run build script
+      run: ./build_enhanced_wsl.sh
+      
+    - name: Find APK files
+      run: find . -name "*.apk" -type f
+      
+    - name: Upload APK artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-apk
+        path: |
+          **/*.apk
+          **/build/outputs/apk/**/*.apk
+        retention-days: 30
+        
+    - name: Upload build logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-logs
+        path: |
+          **/*.log
+          **/build/outputs/logs/**
+        retention-days: 7 

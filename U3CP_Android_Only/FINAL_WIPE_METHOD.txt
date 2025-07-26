@@ -1,0 +1,68 @@
+FINAL WIPE METHOD FOR SAMSUNG GALAXY J3 (SM-J337P)
+==================================================
+
+Since ADB is not detecting the device properly, here's the guaranteed method:
+
+METHOD 1: FORCE RECOVERY MODE (MOST RELIABLE)
+1. Disconnect USB cable completely
+2. Hold Volume Down + Power buttons for 15+ seconds (force shutdown)
+3. Wait 10 seconds
+4. Hold Volume Up + Volume Down + Power buttons simultaneously
+5. Keep holding for 15+ seconds
+6. Release when you see "Recovery Mode" text
+7. Use Volume buttons to navigate, Power to select
+8. Select "Wipe data/factory reset"
+9. Select "Yes" to confirm
+10. Wait for completion
+11. Select "Wipe cache partition"
+12. Select "Reboot system now"
+
+METHOD 2: ALTERNATIVE BUTTON COMBINATIONS
+Try these in order (disconnect USB first):
+- Volume Up + Home + Power (hold 15+ seconds)
+- Volume Down + Home + Power (hold 15+ seconds)
+- Volume Up + Volume Down + Home + Power (hold 15+ seconds)
+- Power + Home (hold 20+ seconds)
+
+METHOD 3: FROM NORMAL BOOT
+1. Let phone boot normally (Volume Down + Power to exit Download Mode)
+2. Complete basic Android setup
+3. Go to Settings > About Phone
+4. Tap "Build Number" 7 times to enable Developer Options
+5. Go to Settings > Developer Options
+6. Enable "USB Debugging"
+7. Connect USB cable
+8. Allow USB Debugging when prompted
+9. Run: adb reboot recovery
+
+METHOD 4: HARDWARE RESET (IF BATTERY REMOVABLE)
+1. Disconnect USB cable
+2. Remove battery for 30 seconds
+3. Reinsert battery
+4. Hold Volume Up + Power immediately
+5. Keep holding until recovery appears
+
+METHOD 5: SETTINGS APP WIPE
+1. Let phone boot normally
+2. Go to Settings > General Management > Reset
+3. Select "Factory data reset"
+4. Select "Reset device"
+5. Enter password/PIN if prompted
+6. Select "Delete all"
+
+TROUBLESHOOTING:
+- If no method works, the phone may need stock firmware reflash
+- Try each method multiple times with different timing
+- Make sure buttons are pressed simultaneously and held long enough
+- Some Samsung models have different button combinations
+
+ONCE WIPE IS COMPLETE:
+1. Phone should boot to fresh Android setup
+2. Complete basic setup (language, WiFi, etc.)
+3. Enable Developer Options (tap Build Number 7 times)
+4. Enable USB Debugging
+5. Connect USB cable
+6. Allow USB Debugging when prompted
+7. Run U3CP installation script
+
+CONTACT: If no method works, we may need to flash stock firmware first. 

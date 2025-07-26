@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Offline Apps Launcher</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .app-card { background: rgba(255,255,255,0.1); padding: 20px; margin: 15px 0; border-radius: 15px; backdrop-filter: blur(10px); }
+        .app-title { font-size: 24px; margin-bottom: 10px; }
+        .app-description { margin-bottom: 15px; opacity: 0.9; }
+        .launch-btn { background: #4caf50; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; cursor: pointer; }
+        .launch-btn:hover { background: #45a049; }
+        .status { background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px; margin: 20px 0; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Offline Apps Launcher</h1>
+        <div class="status">
+            Status: All apps work offline - No internet required
+        </div>
+        
+        <div class="app-card">
+            <div class="app-title">File Manager</div>
+            <div class="app-description">Browse and manage files on your device</div>
+            <button class="launch-btn" onclick="openApp('offline_file_manager.html')">Launch File Manager</button>
+        </div>
+        
+        <div class="app-card">
+            <div class="app-title">Notes App</div>
+            <div class="app-description">Create and save notes locally</div>
+            <button class="launch-btn" onclick="openApp('offline_notes.html')">Launch Notes</button>
+        </div>
+        
+        <div class="app-card">
+            <div class="app-title">Calculator</div>
+            <div class="app-description">Simple calculator for basic math</div>
+            <button class="launch-btn" onclick="openApp('offline_calculator.html')">Launch Calculator</button>
+        </div>
+        
+        <div class="app-card">
+            <div class="app-title">U3CP System</div>
+            <div class="app-description">Main U3CP system interface</div>
+            <button class="launch-btn" onclick="openApp('pure_u3cp.html')">Launch U3CP</button>
+        </div>
+        
+        <div class="app-card">
+            <div class="app-title">System Dashboard</div>
+            <div class="app-description">Real-time system monitoring</div>
+            <button class="launch-btn" onclick="openApp('real_system_dashboard.py')">Launch Dashboard</button>
+        </div>
+    </div>
+    
+    <script>
+        function openApp(filename) {
+            const url = 'file:///sdcard/' + filename;
+            window.open(url, '_blank');
+        }
+        
+        // Auto-open launcher in full screen
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+        }
+    </script>
+</body>
+</html>

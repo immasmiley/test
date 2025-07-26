@@ -1,0 +1,16 @@
+{
+  "system": "windows",
+  "architecture": "AMD64",
+  "python_version": "3.12",
+  "wireless_installer_port": 8080,
+  "discovery_port": 8081,
+  "communication_port": 8082,
+  "firewall_configured": true,
+  "network_ready": true,
+  "open_source_only": true,
+  "android_requirements": {
+    "f_droid": "https://f-droid.org",
+    "termux": "Available on F-Droid",
+    "no_google_play": true
+  }
+}

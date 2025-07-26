@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Offline File Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f0f0f0; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; }
+        .file-item { padding: 10px; border: 1px solid #ddd; margin: 5px 0; border-radius: 5px; }
+        .folder { background: #e3f2fd; }
+        .file { background: #f1f8e9; }
+        button { background: #2196f3; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin: 5px; }
+        .status { padding: 10px; background: #e8f5e8; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Offline File Manager</h1>
+        <div class="status">Status: Working offline - No internet required</div>
+        
+        <h2>System Files</h2>
+        <div class="file-item folder">📁 /sdcard/</div>
+        <div class="file-item file">📄 U3CP_System.py</div>
+        <div class="file-item file">📄 real_system_dashboard.py</div>
+        <div class="file-item file">📄 pure_u3cp.html</div>
+        
+        <h2>Actions</h2>
+        <button onclick="openFile('pure_u3cp.html')">Open U3CP System</button>
+        <button onclick="openFile('real_system_dashboard.py')">Open Dashboard</button>
+        <button onclick="checkStorage()">Check Storage</button>
+        
+        <div id="output"></div>
+    </div>
+    
+    <script>
+        function openFile(filename) {
+            document.getElementById('output').innerHTML = 'Opening: ' + filename;
+            // In a real app, this would open the file
+        }
+        
+        function checkStorage() {
+            const storage = {
+                total: '32GB',
+                used: '8.5GB',
+                free: '23.5GB'
+            };
+            document.getElementById('output').innerHTML = 
+                'Storage: ' + storage.used + ' used of ' + storage.total + ' total';
+        }
+    </script>
+</body>
+</html>

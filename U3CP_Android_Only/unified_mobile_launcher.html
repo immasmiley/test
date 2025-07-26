@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unified U3CP System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+        .container { 
+            max-width: 100%; 
+            padding: 15px;
+        }
+        .header { 
+            background: rgba(255,255,255,0.95); 
+            padding: 20px; 
+            border-radius: 15px; 
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .header h1 { 
+            font-size: 1.8em; 
+            color: #4a5568; 
+            margin-bottom: 8px;
+        }
+        .header p { 
+            font-size: 1em; 
+            color: #718096;
+        }
+        .sphere-lattice { 
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .sphere-lattice h2 { 
+            font-size: 1.5em; 
+            margin-bottom: 10px;
+        }
+        .sphere-grid { 
+            display: grid; 
+            grid-template-columns: repeat(12, 1fr); 
+            gap: 3px; 
+            margin: 15px 0;
+        }
+        .sphere { 
+            width: 15px; 
+            height: 15px; 
+            background: rgba(255,255,255,0.3); 
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        .sphere.active { background: rgba(255,255,255,0.8); }
+        .sphere.anchor { background: #f6ad55; }
+        .component-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 15px; 
+            margin-bottom: 20px;
+        }
+        .component-card { 
+            background: rgba(255,255,255,0.95); 
+            padding: 20px; 
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        .component-card h3 { 
+            color: #2d3748; 
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+        }
+        .status-indicator { 
+            width: 10px; 
+            height: 10px; 
+            border-radius: 50%; 
+            margin-right: 8px;
+        }
+        .status-active { background: #48bb78; }
+        .status-inactive { background: #f56565; }
+        .button { 
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white; 
+            border: none; 
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 14px;
+            margin: 5px 5px 5px 0;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+        .button:hover { transform: translateY(-2px); }
+        .button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .progress-bar { 
+            width: 100%; 
+            height: 6px; 
+            background: #e2e8f0; 
+            border-radius: 3px; 
+            overflow: hidden; 
+            margin: 10px 0;
+        }
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            transition: width 0.3s ease;
+        }
+        .stats { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 10px; 
+            margin-top: 15px;
+        }
+        .stat { 
+            text-align: center; 
+            padding: 10px; 
+            background: rgba(255,255,255,0.1); 
+            border-radius: 8px;
+        }
+        .stat-value { 
+            font-size: 1.5em; 
+            font-weight: bold; 
+            color: white;
+        }
+        .stat-label { 
+            font-size: 0.8em; 
+            color: rgba(255,255,255,0.8);
+        }
+        .component-stats {
+            font-size: 0.9em;
+            color: #666;
+            margin: 10px 0;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #48bb78;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Unified U3CP System</h1>
+            <p>108-Sphere Lattice Integration</p>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="uptime">0</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="active-components">0</div>
+                    <div class="stat-label">Active</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="sphere-data">0</div>
+                    <div class="stat-label">Spheres</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sphere-lattice">
+            <h2>🌐 108-Sphere Lattice</h2>
+            <p>Mathematical foundation</p>
+            <div class="sphere-grid" id="sphere-grid"></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="lattice-progress" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="component-grid">
+            <div class="component-card">
+                <h3><span class="status-indicator status-active"></span>Database System</h3>
+                <div class="component-stats" id="database-stats">Loading...</div>
+                <button class="button" onclick="installComponent('database')" id="db-btn">Install Database</button>
+            </div>
+
+            <div class="component-card">
+                <h3><span class="status-indicator status-active"></span>U3CP Network</h3>
+                <div class="component-stats" id="network-stats">Loading...</div>
+                <button class="button" onclick="installComponent('network')" id="net-btn">Install Network</button>
+            </div>
+
+            <div class="component-card">
+                <h3><span class="status-indicator status-active"></span>Nostr Relay</h3>
+                <div class="component-stats" id="nostr-stats">Loading...</div>
+                <button class="button" onclick="installComponent('nostr')" id="nostr-btn">Install Relay</button>
+            </div>
+
+            <div class="component-card">
+                <h3><span class="status-indicator status-active"></span>Value Framework</h3>
+                <div class="component-stats" id="value-stats">Loading...</div>
+                <button class="button" onclick="installComponent('value')" id="value-btn">Install Framework</button>
+            </div>
+
+            <div class="component-card">
+                <h3><span class="status-indicator status-active"></span>GPS Calendar</h3>
+                <div class="component-stats" id="calendar-stats">Loading...</div>
+                <button class="button" onclick="installComponent('calendar')" id="cal-btn">Install Calendar</button>
+            </div>
+
+            <div class="component-card">
+                <h3><span class="status-indicator status-active"></span>Social System</h3>
+                <div class="component-stats" id="social-stats">Loading...</div>
+                <button class="button" onclick="installComponent('social')" id="social-btn">Install Social</button>
+            </div>
+
+            <div class="component-card">
+                <h3><span class="status-indicator status-active"></span>Transaction Analyzer</h3>
+                <div class="component-stats" id="transaction-stats">Loading...</div>
+                <button class="button" onclick="installComponent('transactions')" id="trans-btn">Install Analyzer</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        let startTime = Date.now();
+        let installedComponents = new Set();
+        
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.background = type === 'success' ? '#48bb78' : '#f56565';
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        function updateStats() {
+            // Update uptime
+            const uptime = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('uptime').textContent = uptime;
+            
+            // Update active components
+            document.getElementById('active-components').textContent = installedComponents.size;
+            
+            // Update sphere data (simulated)
+            const sphereData = Math.min(installedComponents.size * 15, 108);
+            document.getElementById('sphere-data').textContent = sphereData;
+            
+            // Update lattice progress
+            const progress = (sphereData / 108) * 100;
+            document.getElementById('lattice-progress').style.width = progress + '%';
+            
+            // Update sphere grid
+            updateSphereGrid(sphereData);
+        }
+        
+        function updateSphereGrid(activeSpheres) {
+            const spheres = document.querySelectorAll('.sphere');
+            spheres.forEach((sphere, index) => {
+                if (index < activeSpheres) {
+                    sphere.classList.add('active');
+                } else {
+                    sphere.classList.remove('active');
+                }
+            });
+        }
+        
+        function updateComponentStats(component, data) {
+            const element = document.getElementById(component + '-stats');
+            if (element && data) {
+                element.innerHTML = `
+                    <p><strong>Status:</strong> ${data.status}</p>
+                    <p><strong>Data:</strong> ${JSON.stringify(data.data || {}).substring(0, 50)}...</p>
+                `;
+            }
+        }
+        
+        async function installComponent(component) {
+            const button = document.getElementById(component.replace('transactions', 'trans') + '-btn');
+            button.disabled = true;
+            button.textContent = 'Installing...';
+            
+            try {
+                // Simulate installation process
+                await sleep(2000);
+                
+                // Add to installed components
+                installedComponents.add(component);
+                
+                // Update button
+                button.textContent = '✅ Installed';
+                button.style.background = 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)';
+                
+                showNotification(`${component} installed successfully!`);
+                
+                // Update component stats
+                updateComponentStats(component, {
+                    status: 'active',
+                    data: { installed: true, timestamp: new Date().toISOString() }
+                });
+                
+            } catch (error) {
+                button.disabled = false;
+                button.textContent = `Install ${component.charAt(0).toUpperCase() + component.slice(1)}`;
+                showNotification(`Failed to install ${component}`, 'error');
+            }
+        }
+        
+        function generateSphereGrid() {
+            const grid = document.getElementById('sphere-grid');
+            for (let i = 1; i <= 108; i++) {
+                const sphere = document.createElement('div');
+                sphere.className = 'sphere';
+                if (i % 9 === 0) sphere.classList.add('anchor');
+                sphere.title = `Sphere ${i}`;
+                grid.appendChild(sphere);
+            }
+        }
+        
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            generateSphereGrid();
+            updateStats();
+            setInterval(updateStats, 3000); // Update every 3 seconds
+            
+            showNotification('Unified U3CP System loaded!');
+        });
+    </script>
+</body>
+</html> 

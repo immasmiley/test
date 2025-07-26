@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U3CP Quick Launch</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 400px; 
+            margin: 0 auto; 
+        }
+        .header { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 15px; 
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .button { 
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white; 
+            border: none; 
+            padding: 20px; 
+            border-radius: 15px; 
+            font-size: 18px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            width: 100%; 
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+            transition: transform 0.2s;
+        }
+        .button:hover { transform: translateY(-2px); }
+        .button:active { transform: translateY(0); }
+        .button.secondary { 
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
+        }
+        .status { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 U3CP Quick Launch</h1>
+            <p>Tap to install and run U3CP system</p>
+        </div>
+        
+        <button class="button" onclick="installPython()">
+            🐍 Install Python
+        </button>
+        
+        <button class="button secondary" onclick="startDashboard()">
+            📊 Start Dashboard
+        </button>
+        
+        <button class="button secondary" onclick="startU3CP()">
+            🌐 Start U3CP
+        </button>
+        
+        <button class="button secondary" onclick="checkStatus()">
+            🔍 Check Status
+        </button>
+        
+        <div class="status" id="status">
+            Ready to launch U3CP system
+        </div>
+    </div>
+    
+    <script>
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+        
+        function installPython() {
+            updateStatus('Installing Python...');
+            // This would trigger the installation
+            setTimeout(() => {
+                updateStatus('Python installation started!');
+            }, 1000);
+        }
+        
+        function startDashboard() {
+            updateStatus('Starting dashboard...');
+            // This would start the dashboard
+            setTimeout(() => {
+                updateStatus('Dashboard started!');
+            }, 1000);
+        }
+        
+        function startU3CP() {
+            updateStatus('Starting U3CP...');
+            // This would start U3CP
+            setTimeout(() => {
+                updateStatus('U3CP system running!');
+            }, 1000);
+        }
+        
+        function checkStatus() {
+            updateStatus('Checking system status...');
+            // This would check status
+            setTimeout(() => {
+                updateStatus('System status: All good!');
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U3CP Android Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #4a5568;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #718096;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #48bb78;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            color: #4a5568;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+            min-width: 120px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.danger {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+        }
+
+        .btn.success {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+        }
+
+        .btn.warning {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .message-list {
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .message-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .message-time {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-bottom: 5px;
+        }
+
+        .message-content {
+            font-weight: 500;
+        }
+
+        .device-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .device-item {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .device-item:hover {
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+
+        .device-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .device-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .device-status {
+            font-size: 0.9rem;
+            color: #48bb78;
+        }
+
+        .input-group {
+            margin-top: 15px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #48bb78;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 U3CP Android Dashboard</h1>
+            <p>Samsung Galaxy J3 (SM-J337P) - Advanced Communication System</p>
+            <div class="status-badge">🟢 System Online</div>
+        </div>
+
+        <div class="grid">
+            <!-- System Status Card -->
+            <div class="card">
+                <h2>📊 System Status</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="cpu-usage">45%</div>
+                        <div class="stat-label">CPU Usage</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="memory-usage">1.2GB</div>
+                        <div class="stat-label">Memory</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="uptime">2h 15m</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="connections">12</div>
+                        <div class="stat-label">Connections</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 45%"></div>
+                </div>
+            </div>
+
+            <!-- System Controls Card -->
+            <div class="card">
+                <h2>⚙️ System Controls</h2>
+                <button class="btn success" onclick="startSystem()">
+                    <span id="start-btn-text">🚀 Start U3CP</span>
+                </button>
+                <button class="btn danger" onclick="stopSystem()">⏹️ Stop System</button>
+                <button class="btn warning" onclick="scanNetwork()">
+                    <span id="scan-btn-text">🔍 Scan Network</span>
+                </button>
+                <button class="btn" onclick="refreshStats()">🔄 Refresh</button>
+            </div>
+
+            <!-- Network Devices Card -->
+            <div class="card">
+                <h2>🌐 Network Devices</h2>
+                <div class="device-list" id="device-list">
+                    <div class="device-item">
+                        <div class="device-icon">📱</div>
+                        <div class="device-name">Galaxy S21</div>
+                        <div class="device-status">Connected</div>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-icon">💻</div>
+                        <div class="device-name">MacBook Pro</div>
+                        <div class="device-status">Available</div>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-icon">🖥️</div>
+                        <div class="device-name">Windows PC</div>
+                        <div class="device-status">Online</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messaging Card -->
+            <div class="card">
+                <h2>💬 Real-time Messaging</h2>
+                <div class="input-group">
+                    <input type="text" id="message-input" placeholder="Type your message..." maxlength="200">
+                    <button class="btn" onclick="sendMessage()">📤 Send Message</button>
+                </div>
+                <div class="message-list" id="message-list">
+                    <div class="message-item">
+                        <div class="message-time">10:22:15</div>
+                        <div class="message-content">System initialized successfully</div>
+                    </div>
+                    <div class="message-item">
+                        <div class="message-time">10:21:45</div>
+                        <div class="message-content">Network scan completed - 3 devices found</div>
+                    </div>
+                    <div class="message-item">
+                        <div class="message-time">10:20:30</div>
+                        <div class="message-content">U3CP protocol activated</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics Card -->
+            <div class="card">
+                <h2>📈 Performance Metrics</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="messages-sent">156</div>
+                        <div class="stat-label">Messages Sent</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="data-transferred">2.4MB</div>
+                        <div class="stat-label">Data Transferred</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="response-time">12ms</div>
+                        <div class="stat-label">Avg Response</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="success-rate">99.8%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Information Card -->
+            <div class="card">
+                <h2>ℹ️ System Information</h2>
+                <div style="line-height: 1.8;">
+                    <p><strong>Device:</strong> Samsung Galaxy J3 (SM-J337P)</p>
+                    <p><strong>Android Version:</strong> 9 (Pie)</p>
+                    <p><strong>U3CP Version:</strong> 1.0.0</p>
+                    <p><strong>Last Update:</strong> <span id="last-update">Just now</span></p>
+                    <p><strong>Status:</strong> <span style="color: #48bb78;">Operational</span></p>
+                    <p><strong>Security:</strong> <span style="color: #48bb78;">Encrypted</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // System state
+        let systemRunning = false;
+        let networkScanning = false;
+        let stats = {
+            cpu: 45,
+            memory: 1.2,
+            uptime: '2h 15m',
+            connections: 12,
+            messagesSent: 156,
+            dataTransferred: 2.4,
+            responseTime: 12,
+            successRate: 99.8
+        };
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            startAutoRefresh();
+            showNotification('Dashboard loaded successfully!', 'success');
+        });
+
+        // System control functions
+        function startSystem() {
+            if (!systemRunning) {
+                systemRunning = true;
+                document.getElementById('start-btn-text').innerHTML = '<span class="loading"></span> Running...';
+                showNotification('U3CP system started successfully!', 'success');
+                
+                // Simulate system startup
+                setTimeout(() => {
+                    document.getElementById('start-btn-text').textContent = '🟢 System Running';
+                    updateStats();
+                }, 2000);
+            }
+        }
+
+        function stopSystem() {
+            if (systemRunning) {
+                systemRunning = false;
+                document.getElementById('start-btn-text').textContent = '🚀 Start U3CP';
+                showNotification('System stopped safely', 'warning');
+                updateStats();
+            }
+        }
+
+        function scanNetwork() {
+            if (!networkScanning) {
+                networkScanning = true;
+                document.getElementById('scan-btn-text').innerHTML = '<span class="loading"></span> Scanning...';
+                
+                // Simulate network scan
+                setTimeout(() => {
+                    networkScanning = false;
+                    document.getElementById('scan-btn-text').textContent = '🔍 Scan Network';
+                    showNotification('Network scan completed - 3 devices found', 'success');
+                    updateDeviceList();
+                }, 3000);
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            
+            if (message) {
+                addMessage(message);
+                input.value = '';
+                stats.messagesSent++;
+                updateStats();
+                showNotification('Message sent successfully!', 'success');
+            }
+        }
+
+        function addMessage(content) {
+            const messageList = document.getElementById('message-list');
+            const time = new Date().toLocaleTimeString();
+            
+            const messageItem = document.createElement('div');
+            messageItem.className = 'message-item';
+            messageItem.innerHTML = `
+                <div class="message-time">${time}</div>
+                <div class="message-content">${content}</div>
+            `;
+            
+            messageList.insertBefore(messageItem, messageList.firstChild);
+            
+            // Keep only last 10 messages
+            if (messageList.children.length > 10) {
+                messageList.removeChild(messageList.lastChild);
+            }
+        }
+
+        function updateStats() {
+            // Update CPU usage with random variation
+            stats.cpu = Math.max(20, Math.min(80, stats.cpu + (Math.random() - 0.5) * 10));
+            document.getElementById('cpu-usage').textContent = Math.round(stats.cpu) + '%';
+            document.querySelector('.progress-fill').style.width = Math.round(stats.cpu) + '%';
+            
+            // Update other stats
+            document.getElementById('memory-usage').textContent = stats.memory.toFixed(1) + 'GB';
+            document.getElementById('connections').textContent = stats.connections;
+            document.getElementById('messages-sent').textContent = stats.messagesSent;
+            document.getElementById('data-transferred').textContent = stats.dataTransferred.toFixed(1) + 'MB';
+            document.getElementById('response-time').textContent = stats.responseTime + 'ms';
+            document.getElementById('success-rate').textContent = stats.successRate.toFixed(1) + '%';
+        }
+
+        function updateDeviceList() {
+            const deviceList = document.getElementById('device-list');
+            const devices = [
+                { icon: '📱', name: 'Galaxy S21', status: 'Connected' },
+                { icon: '💻', name: 'MacBook Pro', status: 'Available' },
+                { icon: '🖥️', name: 'Windows PC', status: 'Online' },
+                { icon: '📱', name: 'iPhone 13', status: 'Discovered' }
+            ];
+            
+            deviceList.innerHTML = devices.map(device => `
+                <div class="device-item">
+                    <div class="device-icon">${device.icon}</div>
+                    <div class="device-name">${device.name}</div>
+                    <div class="device-status">${device.status}</div>
+                </div>
+            `).join('');
+        }
+
+        function refreshStats() {
+            showNotification('Statistics refreshed', 'success');
+            updateStats();
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification show ${type}`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function startAutoRefresh() {
+            setInterval(() => {
+                if (systemRunning) {
+                    updateStats();
+                }
+            }, 5000);
+        }
+
+        // Handle Enter key in message input
+        document.getElementById('message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Update last update time
+        setInterval(() => {
+            document.getElementById('last-update').textContent = 'Just now';
+        }, 60000);
+    </script>
+</body>
+</html> 

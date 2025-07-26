@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U3CP Real Tap Installation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+        }
+        .header { 
+            background: rgba(255,255,255,0.95); 
+            padding: 30px; 
+            border-radius: 20px; 
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .header h1 { 
+            color: #4a5568; 
+            margin-bottom: 10px; 
+            font-size: 28px;
+        }
+        .device-info { 
+            color: #718096; 
+            font-size: 16px; 
+            margin-bottom: 20px;
+        }
+        .button-grid {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .tap-button {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border: none;
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .tap-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+        }
+        .tap-button:active {
+            transform: translateY(0);
+        }
+        .tap-button.secondary {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
+        }
+        .tap-button.secondary:hover {
+            box-shadow: 0 6px 20px rgba(66, 153, 225, 0.4);
+        }
+        .tap-button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .status-card {
+            background: rgba(255,255,255,0.95); 
+            padding: 25px; 
+            border-radius: 15px; 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        .status-label {
+            color: #4a5568;
+            font-weight: 500;
+        }
+        .status-value {
+            font-weight: bold;
+        }
+        .status-ok { color: #48bb78; }
+        .status-warning { color: #ed8936; }
+        .status-error { color: #f56565; }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .log-area {
+            background: rgba(255,255,255,0.95); 
+            padding: 25px; 
+            border-radius: 15px; 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid #e2e8f0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #48bb78;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        .notification.show {
+            transform: translateX(0);
+        }
+        .notification.error {
+            background: #f56565;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 U3CP Real Tap Installation</h1>
+            <div class="device-info">
+                📱 Samsung Galaxy J3 (SM-J337P)<br>
+                💻 Real installation commands - No simulation theater!
+            </div>
+        </div>
+
+        <div class="button-grid">
+            <button class="tap-button" onclick="installPython()" id="install-btn">
+                🐍 Install Python & Dependencies
+            </button>
+            
+            <button class="tap-button secondary" onclick="startDashboard()" id="dashboard-btn">
+                📊 Start Real System Dashboard
+            </button>
+            
+            <button class="tap-button secondary" onclick="startU3CP()" id="u3cp-btn">
+                🌐 Start U3CP System
+            </button>
+            
+            <button class="tap-button secondary" onclick="checkStatus()" id="status-btn">
+                🔍 Check Real Status
+            </button>
+        </div>
+
+        <div class="status-card">
+            <h3>📋 Real Installation Status</h3>
+            <div class="status-item">
+                <span class="status-label">Termux</span>
+                <span class="status-value status-ok" id="termux-status">✅ Installed</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Python</span>
+                <span class="status-value status-warning" id="python-status">⏳ Ready to Install</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Real Dashboard</span>
+                <span class="status-value status-ok" id="dashboard-status">✅ Ready</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">U3CP System</span>
+                <span class="status-value status-ok" id="u3cp-status">✅ Ready</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div style="text-align: center; color: #718096; font-size: 12px;">
+                Installation Progress: <span id="progress-text">0%</span>
+            </div>
+        </div>
+
+        <div class="log-area">
+            <h3>📝 Real Installation Logs</h3>
+            <div id="log-container">
+                <div class="log-entry">System ready - waiting for commands...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080/api';
+        let isInstalling = false;
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification show ${type}`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        function addLogEntry(message) {
+            const logContainer = document.getElementById('log-container');
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function updateProgress(percent) {
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = percent + '%';
+        }
+
+        function updateStatus(item, status, className) {
+            const element = document.getElementById(item + '-status');
+            element.textContent = status;
+            element.className = 'status-value ' + className;
+        }
+
+        function setButtonState(buttonId, disabled) {
+            const button = document.getElementById(buttonId);
+            button.disabled = disabled;
+        }
+
+        async function installPython() {
+            if (isInstalling) {
+                showNotification('Installation already in progress...', 'error');
+                return;
+            }
+
+            isInstalling = true;
+            setButtonState('install-btn', true);
+            updateStatus('python', '⏳ Installing...', 'status-warning');
+            addLogEntry('Starting Python installation...');
+            showNotification('Installing Python via Termux...');
+
+            try {
+                const response = await fetch(`${API_BASE}/install-python`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    updateStatus('python', '✅ Installed', 'status-ok');
+                    updateProgress(75);
+                    addLogEntry('Python installation completed successfully');
+                    showNotification('Python installation completed!');
+                } else {
+                    updateStatus('python', '❌ Failed', 'status-error');
+                    addLogEntry(`Python installation failed: ${result.message}`);
+                    showNotification(`Installation failed: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                updateStatus('python', '❌ Error', 'status-error');
+                addLogEntry(`Network error: ${error.message}`);
+                showNotification('Network error - check if server is running', 'error');
+            }
+
+            isInstalling = false;
+            setButtonState('install-btn', false);
+        }
+
+        async function startDashboard() {
+            setButtonState('dashboard-btn', true);
+            addLogEntry('Starting real system dashboard...');
+            showNotification('Starting dashboard...');
+
+            try {
+                const response = await fetch(`${API_BASE}/start-dashboard`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    updateStatus('dashboard', '🟢 Running', 'status-ok');
+                    addLogEntry('Real system dashboard started successfully');
+                    showNotification('Dashboard started! Open http://localhost:5000');
+                } else {
+                    updateStatus('dashboard', '❌ Failed', 'status-error');
+                    addLogEntry(`Dashboard start failed: ${result.message}`);
+                    showNotification(`Dashboard failed: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                updateStatus('dashboard', '❌ Error', 'status-error');
+                addLogEntry(`Network error: ${error.message}`);
+                showNotification('Network error - check if server is running', 'error');
+            }
+
+            setButtonState('dashboard-btn', false);
+        }
+
+        async function startU3CP() {
+            setButtonState('u3cp-btn', true);
+            addLogEntry('Starting U3CP system...');
+            showNotification('Starting U3CP...');
+
+            try {
+                const response = await fetch(`${API_BASE}/start-u3cp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    updateStatus('u3cp', '🟢 Running', 'status-ok');
+                    addLogEntry('U3CP system started successfully');
+                    showNotification('U3CP system is now running!');
+                } else {
+                    updateStatus('u3cp', '❌ Failed', 'status-error');
+                    addLogEntry(`U3CP start failed: ${result.message}`);
+                    showNotification(`U3CP failed: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                updateStatus('u3cp', '❌ Error', 'status-error');
+                addLogEntry(`Network error: ${error.message}`);
+                showNotification('Network error - check if server is running', 'error');
+            }
+
+            setButtonState('u3cp-btn', false);
+        }
+
+        async function checkStatus() {
+            setButtonState('status-btn', true);
+            addLogEntry('Checking real system status...');
+            showNotification('Checking status...');
+
+            try {
+                const response = await fetch(`${API_BASE}/check-status`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const status = result.status;
+                    
+                    updateStatus('termux', status.termux ? '✅ Installed' : '❌ Not Found', status.termux ? 'status-ok' : 'status-error');
+                    updateStatus('python', status.python ? '✅ Available' : '❌ Not Found', status.python ? 'status-ok' : 'status-error');
+                    
+                    if (status.termux && status.python) {
+                        updateProgress(100);
+                    } else if (status.termux) {
+                        updateProgress(50);
+                    }
+                    
+                    addLogEntry(`Status check completed - Termux: ${status.termux}, Python: ${status.python}, Files: ${status.files}`);
+                    showNotification('Status check completed');
+                } else {
+                    addLogEntry(`Status check failed: ${result.message}`);
+                    showNotification(`Status check failed: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                addLogEntry(`Network error: ${error.message}`);
+                showNotification('Network error - check if server is running', 'error');
+            }
+
+            setButtonState('status-btn', false);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress(25); // Termux installed
+            addLogEntry('Real tap installer interface loaded');
+            showNotification('Real tap installer ready! Start server first.');
+        });
+    </script>
+</body>
+</html> 

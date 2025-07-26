@@ -1,0 +1,51 @@
+SAMSUNG GALAXY J3 (SM-J337P) WIPE INSTRUCTIONS
+===============================================
+
+Your Samsung Galaxy J3 is currently in Download Mode (Odin Mode).
+To wipe the phone completely, follow these steps:
+
+STEP 1: EXIT DOWNLOAD MODE
+1. Disconnect the USB cable from the phone
+2. Hold the Volume Down + Power buttons for 10 seconds
+3. Release both buttons
+4. The phone should reboot to normal Android
+
+STEP 2: ENTER RECOVERY MODE
+1. Once the phone is on, hold Volume Up + Power buttons
+2. Keep holding until you see "Recovery Mode" text
+3. Release both buttons
+4. You should see the Android Recovery menu
+
+STEP 3: WIPE THE PHONE
+1. Use Volume Down to navigate to "Wipe data/factory reset"
+2. Press Power button to select
+3. Use Volume Down to select "Yes" 
+4. Press Power button to confirm
+5. Wait for the wipe to complete
+6. Use Volume Down to select "Wipe cache partition"
+7. Press Power button to select
+8. Wait for cache wipe to complete
+9. Use Volume Down to select "Reboot system now"
+10. Press Power button to reboot
+
+STEP 4: VERIFY WIPE
+1. The phone should boot to a fresh Android setup
+2. You should see "Welcome" or setup screens
+3. No apps or data should be present
+
+STEP 5: PREPARE FOR U3CP INSTALLATION
+1. Complete the basic Android setup (language, WiFi, etc.)
+2. Enable Developer Options (tap Build Number 7 times in Settings > About Phone)
+3. Enable USB Debugging in Developer Options
+4. Connect USB cable to computer
+5. Allow USB Debugging when prompted on phone
+
+The phone is now ready for U3CP system installation!
+
+TROUBLESHOOTING:
+- If phone won't exit Download Mode: Try different button combinations
+- If Recovery Mode doesn't appear: Try Volume Up + Home + Power
+- If wipe fails: Try the wipe process again
+- If phone won't boot: You may need to flash stock firmware first
+
+CONTACT: If you need help, the U3CP installation will guide you through any remaining setup. 

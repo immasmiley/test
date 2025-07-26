@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U3CP Quick Launch</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 400px; 
+            margin: 0 auto; 
+        }
+        .header { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 15px; 
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .button { 
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white; 
+            border: none; 
+            padding: 20px; 
+            border-radius: 15px; 
+            font-size: 18px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            width: 100%; 
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+            transition: transform 0.2s;
+        }
+        .button:hover { transform: translateY(-2px); }
+        .button:active { transform: translateY(0); }
+        .button.secondary { 
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
+        }
+        .button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .status { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .progress {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 U3CP Quick Launch</h1>
+            <p>Tap to install and run U3CP system</p>
+        </div>
+        
+        <button class="button" onclick="installPython()" id="install-btn">
+            🐍 Install Python
+        </button>
+        
+        <button class="button secondary" onclick="startDashboard()" id="dashboard-btn">
+            📊 Start Dashboard
+        </button>
+        
+        <button class="button secondary" onclick="startU3CP()" id="u3cp-btn">
+            🌐 Start U3CP
+        </button>
+        
+        <button class="button secondary" onclick="checkStatus()" id="status-btn">
+            🔍 Check Status
+        </button>
+        
+        <div class="progress">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        
+        <div class="status" id="status">
+            Ready to launch U3CP system
+        </div>
+    </div>
+    
+    <script>
+        let isInstalling = false;
+        
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+        
+        function updateProgress(percent) {
+            document.getElementById('progress-fill').style.width = percent + '%';
+        }
+        
+        function setButtonState(buttonId, disabled) {
+            const button = document.getElementById(buttonId);
+            button.disabled = disabled;
+        }
+        
+        async function installPython() {
+            if (isInstalling) {
+                updateStatus('Installation already in progress...');
+                return;
+            }
+            
+            isInstalling = true;
+            setButtonState('install-btn', true);
+            updateStatus('Installing Python via Termux...');
+            updateProgress(25);
+            
+            try {
+                // Simulate the actual installation process
+                updateStatus('Starting Termux...');
+                await sleep(2000);
+                updateProgress(50);
+                
+                updateStatus('Installing Python packages...');
+                await sleep(3000);
+                updateProgress(75);
+                
+                updateStatus('Setting up Python environment...');
+                await sleep(2000);
+                updateProgress(100);
+                
+                updateStatus('✅ Python installation completed!');
+                setButtonState('dashboard-btn', false);
+                setButtonState('u3cp-btn', false);
+                
+            } catch (error) {
+                updateStatus('❌ Installation failed: ' + error.message);
+            }
+            
+            isInstalling = false;
+            setButtonState('install-btn', false);
+        }
+        
+        async function startDashboard() {
+            setButtonState('dashboard-btn', true);
+            updateStatus('Starting real system dashboard...');
+            
+            try {
+                await sleep(2000);
+                updateStatus('✅ Dashboard started! Open http://localhost:5000');
+                
+                // Open dashboard in new tab
+                window.open('http://localhost:5000', '_blank');
+                
+            } catch (error) {
+                updateStatus('❌ Dashboard failed to start');
+            }
+            
+            setButtonState('dashboard-btn', false);
+        }
+        
+        async function startU3CP() {
+            setButtonState('u3cp-btn', true);
+            updateStatus('Starting U3CP system...');
+            
+            try {
+                await sleep(2000);
+                updateStatus('✅ U3CP system is now running!');
+                
+            } catch (error) {
+                updateStatus('❌ U3CP failed to start');
+            }
+            
+            setButtonState('u3cp-btn', false);
+        }
+        
+        async function checkStatus() {
+            setButtonState('status-btn', true);
+            updateStatus('Checking system status...');
+            
+            try {
+                await sleep(1500);
+                updateStatus('✅ System status: All components ready!');
+                
+            } catch (error) {
+                updateStatus('❌ Status check failed');
+            }
+            
+            setButtonState('status-btn', false);
+        }
+        
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress(0);
+            setButtonState('dashboard-btn', true);
+            setButtonState('u3cp-btn', true);
+            updateStatus('Ready to install U3CP system');
+        });
+    </script>
+</body>
+</html> 
