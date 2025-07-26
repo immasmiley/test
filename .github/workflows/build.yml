@@ -3,44 +3,49 @@ name: Build Android APK
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-  workflow_dispatch:  # Allows manual triggering
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04  # Use older Ubuntu for better compatibility
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v4
       with:
-        java-version: '17'
-        distribution: 'temurin'
+        python-version: '3.8'
         
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        api-level: 34
-        build-tools: 34.0.0
-        
-    - name: Make build script executable
-      run: chmod +x build_enhanced_wsl.sh
-      
-    - name: Install additional dependencies
+    - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y wget unzip curl build-essential
+        sudo apt-get install -y git zip unzip openjdk-8-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 build-essential libssl-dev libffi-dev python3-dev
+        
+    - name: Set up Android SDK
+      run: |
+        wget -q https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
+        unzip -q commandlinetools-linux-8512546_latest.zip
+        mkdir -p android-sdk/cmdline-tools/latest
+        mv cmdline-tools/* android-sdk/cmdline-tools/latest/
+        export ANDROID_HOME=$PWD/android-sdk
+        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+        yes | sdkmanager --licenses
+        sdkmanager "platform-tools" "platforms;android-31" "build-tools;31.0.0"
+        
+    - name: Install buildozer
+      run: |
+        pip3 install buildozer cython
         
     - name: Create build environment
       run: python3 setup_distribution_enhanced.py
-        
-    - name: Run build script
-      run: ./build_enhanced_wsl.sh
       
+    - name: Run build script
+      run: |
+        chmod +x build_enhanced_wsl.sh
+        ./build_enhanced_wsl.sh
+        
     - name: Find APK files
       run: find . -name "*.apk" -type f
       
@@ -48,17 +53,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: android-apk
-        path: |
-          **/*.apk
-          **/build/outputs/apk/**/*.apk
-        retention-days: 30
-        
-    - name: Upload build logs
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-logs
-        path: |
-          **/*.log
-          **/build/outputs/logs/**
-        retention-days: 7 
+        path: "**/*.apk"
+        retention-days: 30 
