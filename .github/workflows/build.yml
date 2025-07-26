@@ -35,6 +35,9 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y wget unzip curl build-essential
         
+    - name: Create build environment
+      run: python3 setup_distribution_enhanced.py
+        
     - name: Run build script
       run: ./build_enhanced_wsl.sh
       
