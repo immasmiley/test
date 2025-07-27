@@ -2,7 +2,6 @@
 *.apk
 *.AppImage
 *.zip
-*.db
 
 # Ignore Python cache
 __pycache__/
