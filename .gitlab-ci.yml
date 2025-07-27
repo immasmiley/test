@@ -1,0 +1,23 @@
+﻿image: ubuntu:20.04
+
+stages:
+  - build
+
+variables:
+  DEBIAN_FRONTEND: noninteractive
+
+before_script:
+  - apt-get update -qq
+  - apt-get install -y git python3 python3-pip openjdk-8-jdk wget unzip build-essential autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 libssl-dev libffi-dev python3-dev
+
+build_android:
+  stage: build
+  script:
+    - python3 setup_distribution_enhanced.py
+    - chmod +x build_enhanced_wsl.sh
+    - ./build_enhanced_wsl.sh
+  artifacts:
+    paths:
+      - "**/*.apk"
+    expire_in: 30 days
+  timeout: 30m
