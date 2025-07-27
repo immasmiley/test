@@ -339,8 +339,8 @@ source.exclude_dirs = tests, bin, venv, .buildozer, __pycache__
 # App version
 version = 0.1.0
 
-# Requirements - enhanced for self-distribution
-requirements = python3,kivy==2.2.1,sqlite3,websockets,asyncio,zlib,hashlib,json,threading,datetime,pathlib,base64,math,random
+# Requirements - FIXED for valid PyPI packages
+requirements = python3,kivy==2.2.1,websockets
 
 # App metadata
 author = U3CP Development Team
@@ -385,7 +385,6 @@ warn_on_root = 1
     
     requirements_txt = '''kivy==2.2.1
 websockets
-asyncio
 '''
     
     with open(build_dir / "requirements.txt", "w", encoding="utf-8") as f:
